@@ -67,7 +67,8 @@ def install_base_packages
     5/ParallelDownloads = 5/g' #{pac_file}"]))
 
   # base packages --
-  base_packages = 'spectrwm xorg ly fzf the_silver_searcher ranger neovim tmux'
+  base_packages = 'spectrwm xorg ly fzf the_silver_searcher ranger neovim tmux \
+    alacritty'
 
   cmd = "/usr/bin/sudo /usr/bin/pacman -Sy #{base_packages}"
   Open3.pipeline cmd, in: $stdin, out: $stdout
