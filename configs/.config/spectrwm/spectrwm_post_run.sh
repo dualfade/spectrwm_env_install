@@ -11,8 +11,10 @@
 # -> yain network-manager-applet
 # required by protonvpn-cli; stupid dep  --
 # /usr/bin/nm-applet &
+
+# set wallpaper; anything else ??
 #/usr/bin/feh --bg-fill ~/.wallpaper/dark-cubes-hd-wallpaper.jpg &
-/usr/bin/xrdb -merge ~/.Xresources &
+#/usr/bin/xrdb -merge ~/.Xresources &
 
 # update xps display --
 # xrandr | grep -w connected | cut -f '1' -d ' '
