@@ -127,7 +127,7 @@ def install_blackarch_pacstrap
   ba_run_sudo = '/usr/bin/sudo ./strap.sh'
   ba_pacman_update = '/usr/bin/sudo pacman -Syu'
 
-  ba_pacstrap = []
+  ba_pacstrap = %w[]
   ba_pacstrap.push(ba_strap_file, ba_sha1_checksum, ba_set_perms, \
                    ba_run_sudo, ba_pacman_update)
 
