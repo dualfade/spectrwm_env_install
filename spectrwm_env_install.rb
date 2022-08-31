@@ -3,7 +3,7 @@
 # dualfade --
 
 # spectrwm environment installer --
-# python re-reite in ruby, however we are tailored for
+# python re-rewrite in ruby, however we are tailored for
 # spectrwm installation --
 # this also assumes you have net-installed archlinux only.
 # bare-bones install in essence.
