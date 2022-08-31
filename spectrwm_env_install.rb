@@ -117,6 +117,10 @@ def blackarch_pacstrap
   # https://blackarch.org/downloads.html --
 end
 
+def post_install
+  # placeholder --
+end
+
 def stderr_check(stdout, stderr)
   # initialize --
   logger = Logger.new($stdout)
