@@ -68,7 +68,7 @@ def install_base_packages
     5/ParallelDownloads = 5/g' #{pac_file}"]))
 
   # base packages --
-  base_packages = "spectrwm xorg ly fzf the_silver_searcher ranger neovim tmux \
+  base_packages = "spectrwm xorg fzf the_silver_searcher ranger neovim tmux \
     alacritty"
 
   cmd = "/usr/bin/sudo /usr/bin/pacman -Sy #{base_packages}"
@@ -113,9 +113,29 @@ def clear_pacman_cache
   # placeholder --
 end
 
-def blackarch_pacstrap
+def install_blackarch_pacstrap
   # enable blackarch repo --
   # https://blackarch.org/downloads.html --
+  logger = Logger.new($stdout)
+  logger.info('enablng => blackarch repositories')
+
+  # array commands --
+  ba_strap_file = '/usr/bin/curl -O https://blackarch.org/strap.sh'
+  ba_sha1_checksum = '/bin/echo 5ea40d49ecd14c2e024deecf90605426db97ea0c strap.sh \
+    | /usr/bin/sha1sum -c'
+  ba_set_perms = '/usr/bin/chmod +x strap.sh'
+  ba_run_sudo = '/usr/bin/sudo ./strap.sh'
+  ba_pacman_update = '/usr/bin/sudo pacman -Syu'
+
+  ba_pacstrap = []
+  ba_pacstrap.push(ba_strap_file, ba_sha1_checksum, ba_set_perms, \
+                   ba_run_sudo, ba_pacman_update)
+
+  ba_pacstrap.each do |i|
+    Open3.pipeline i, in: $stdin, out: $stdout
+    puts $stdin
+    puts $stdout
+  end
 end
 
 def post_install
@@ -175,7 +195,8 @@ if __FILE__ == $PROGRAM_NAME
     # defs --
     github_dir_struct
     install_base_packages
-    install_oh_my_zsh
+    install_blackarch_pacstrap
+    # install_oh_my_zsh
   rescue Slop::Error => e
     logger.error(e)
   rescue StandardError => e
