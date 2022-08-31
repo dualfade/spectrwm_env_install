@@ -30,6 +30,7 @@ logger.formatter = proc { |severity, datetime, progname, msg|
 }
 
 # Github directory struct --
+# if it's not a blackarch package; we organize here --
 def github_dir_struct
   # inspired by ptf --
   # https://github.com/trustedsec/ptf --
