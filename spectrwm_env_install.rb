@@ -96,8 +96,7 @@ def install_oh_my_zsh
 
   # init --
   zsh_plugins = %w[]
-  zsh_plugins.push(zsh_auto)
-  zsh_plugins.push(zsh_syntax)
+  zsh_plugins.push(zsh_auto, zsh_syntax)
   zsh_plugins.each do |i|
     Open3.pipeline i, in: $stdin, out: $stdout
     puts $stdin
@@ -106,10 +105,6 @@ def install_oh_my_zsh
 end
 
 def install_config_files
-  # placeholder --
-end
-
-def clear_pacman_cache
   # placeholder --
 end
 
@@ -140,6 +135,7 @@ end
 
 def post_install
   # placeholder --
+  # clear pacman cache --
 end
 
 def stderr_check(stdout, stderr)
