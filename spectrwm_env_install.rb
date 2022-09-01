@@ -81,6 +81,16 @@ def install_oh_my_zsh
   # install oh-my-zsh --
   logger = Logger.new($stdout)
 
+  # WARN: check existing installation --
+  # NOTE: not needed; zsh install will terminate on it's own  --
+  # zsh_directory = '~/.oh-my-zsh'
+  # if Dir.exist?("#{zsh_directory}")
+  #   logger.error("exists => ~/#{username}/.oh-my-zsh")
+  #   logger.error('exiting => manually back up your ~/.oh-my-zsh installtion')
+  #   logger.error('then restart the install')
+  #   exit
+  # end
+
   logger.info('installing => oh-my-zsh')
   logger.info('url => https://ohmyz.sh/#install')
   cmd = 'sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"'
@@ -189,10 +199,10 @@ if __FILE__ == $PROGRAM_NAME
     end
 
     # defs --
-    github_dir_struct
-    install_base_packages
-    install_blackarch_pacstrap
-    # install_oh_my_zsh
+    # github_dir_struct
+    # install_base_packages
+    # install_blackarch_pacstrap
+    install_oh_my_zsh
   rescue Slop::Error => e
     logger.error(e)
   rescue StandardError => e
