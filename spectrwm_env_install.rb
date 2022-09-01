@@ -199,9 +199,9 @@ if __FILE__ == $PROGRAM_NAME
     end
 
     # defs --
-    # github_dir_struct
-    # install_base_packages
-    # install_blackarch_pacstrap
+    github_dir_struct
+    install_base_packages
+    install_blackarch_pacstrap
     install_oh_my_zsh
   rescue Slop::Error => e
     logger.error(e)
