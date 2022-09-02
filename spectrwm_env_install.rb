@@ -69,7 +69,7 @@ def install_base_packages
 
   # base packages --
   base_packages = "spectrwm xorg fzf the_silver_searcher ranger neovim tmux \
-    alacritty alacritty-themes"
+    xterm alacritty alacritty-themes"
 
   cmd = "/usr/bin/sudo /usr/bin/pacman -Sy #{base_packages}"
   Open3.pipeline cmd, in: $stdin, out: $stdout
