@@ -125,7 +125,7 @@ def install_config_files
   # TODO: placeholder --
 end
 
-def install_blackarch_pacstrap
+def install_pacstrap
   # enable blackarch repo --
   # https://blackarch.org/downloads.html --
   logger = Logger.new($stdout)
@@ -145,7 +145,7 @@ def install_blackarch_pacstrap
 
   ba_pacstrap.each do |i|
     Open3.pipeline i, in: $stdin, out: $stdout
-    stderr_check($stderr, $stdin)
+    stderr_check($stdin, $stderr)
   end
 end
 
@@ -153,17 +153,17 @@ def install_yay
   # install yay package manager; other packages --
   # clear pacman cache --
   logger = Logger.new($stdout)
-  logger.info('yay install => yay')
+  logger.info('install => yay')
   logger.info('note => add your custom apps to the array')
 
   # first things first; install yay --
   cmd = '/usr/bin/sudo /usr/bin/pacman -Syu yay'
   Open3.pipeline cmd, in: $stdin, out: $stdout
-  puts $stdin
-  puts $stdout
+  stderr_check($stdin, $stderr)
 
   # next; yay package array --
   # install apps --
+  logger.info('yay => install packages')
   install_yay_packages = "alacritty-themes bmz-cursor-theme-git vimix-icon-theme \
     arc-gtk-theme neofetch"
 
@@ -229,7 +229,7 @@ if __FILE__ == $PROGRAM_NAME
     # defs --
     github_dir_struct
     install_base_packages
-    install_blackarch_pacstrap
+    install_pacstrap
     install_yay
     install_oh_my_zsh
   rescue Slop::Error => e
