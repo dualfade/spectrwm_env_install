@@ -1,7 +1,7 @@
 - README.md
 
-````Leaving installer default with essentials.
-Copy config(s) into place and modify if you wish to use them.```
+```Leaving installer default with essentials.
+Copy config(s) into place and modify if you wish to use them.
 
 - spectrwm --
   NOTE: Update custom spectrwm_post_run.sh with your requirements --
@@ -21,4 +21,4 @@ Copy config(s) into place and modify if you wish to use them.```
   cp -Rvp .gtkrc-2.0 ~/
   cp -Rvp .config/gtk-2.0 ~/.config/
   cp -Rvp .config/gtk-3.0 ~/.config/
-````
+```
