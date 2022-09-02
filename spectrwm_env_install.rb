@@ -29,11 +29,14 @@ logger.formatter = proc { |severity, datetime, progname, msg|
   original_formatter.call(severity, datetime, progname, msg.dump)
 }
 
-# Github directory struct --
-# if it's not a blackarch package; we organize here --
+# class --
+
+# defs --
 def github_dir_struct
   # inspired by ptf --
   # https://github.com/trustedsec/ptf --
+  # Github directory struct --
+  # if it's not a blackarch package; we organize here --
   git_dir_struct = %w[av-bypass code-audit custom_list exploitation intelligence-gathering mobile-analysis
                       osx password-recovery pivoting post-exploitation powershell pre-engagement reporting
                       reversing threat-modeling vulnerability-analysis webshells windows-tools wireless
