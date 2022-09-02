@@ -9,8 +9,10 @@
 # bare-bones install in essence.
 
 # WARN: README !
-# install the requirements below first --
+# install the requirements below first; and reboot if required --
 # sudo pacman -Syu ruby zsh git
+# /sbin/sudo sync -f && /sbin/sudo /sbin/shutdown now -r
+# restart the installer --
 
 # require gems --
 require 'bundler/inline'
