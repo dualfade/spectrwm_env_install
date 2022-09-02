@@ -30,6 +30,21 @@ logger.formatter = proc { |severity, datetime, progname, msg|
 }
 
 # class --
+class InstallClass
+  # compact code; loop install --
+  # rinse and repeat --
+  logger = Logger.new($stdout)
+  logger.info('init => class installation')
+
+  def install(packages)
+    # install package array --
+    cmd = "/usr/bin/sudo /usr/bin/pacman -Sy #{packages}"
+    Open3.pipeline cmd, in: $stdin, out: $stdout
+
+    # stderr check --
+    stderr_check($stdin, $stderr)
+  end
+end
 
 # defs --
 def github_dir_struct
@@ -74,25 +89,13 @@ def install_base_packages
   base_packages = "spectrwm xorg fzf the_silver_searcher ranger neovim tmux \
     xterm alacritty fakeroot"
 
-  cmd = "/usr/bin/sudo /usr/bin/pacman -Sy #{base_packages}"
-  Open3.pipeline cmd, in: $stdin, out: $stdout
-  puts $stdin
-  puts $stdout
+  to_install = InstallClass.new
+  to_install.install(base_packages)
 end
 
 def install_oh_my_zsh
   # install oh-my-zsh --
   logger = Logger.new($stdout)
-
-  # WARN: check existing installation --
-  # NOTE: not needed; zsh install will terminate on it's own  --
-  # zsh_directory = '~/.oh-my-zsh'
-  # if Dir.exist?("#{zsh_directory}")
-  #   logger.error("exists => ~/#{username}/.oh-my-zsh")
-  #   logger.error('exiting => manually back up your ~/.oh-my-zsh installtion')
-  #   logger.error('then restart the install')
-  #   exit
-  # end
 
   logger.info('installing => oh-my-zsh')
   logger.info('url => https://ohmyz.sh/#install')
@@ -112,13 +115,12 @@ def install_oh_my_zsh
   zsh_plugins.push(zsh_auto, zsh_syntax)
   zsh_plugins.each do |i|
     Open3.pipeline i, in: $stdin, out: $stdout
-    puts $stdin
-    puts $stdout
+    stderr_check($stderr, $stdin)
   end
 end
 
 def install_config_files
-  # placeholder --
+  # TODO: placeholder --
 end
 
 def install_blackarch_pacstrap
@@ -141,12 +143,11 @@ def install_blackarch_pacstrap
 
   ba_pacstrap.each do |i|
     Open3.pipeline i, in: $stdin, out: $stdout
-    puts $stdin
-    puts $stdout
+    stderr_check($stderr, $stdin)
   end
 end
 
-def yay_install
+def install_yay
   # install yay package manager; other packages --
   # clear pacman cache --
   logger = Logger.new($stdout)
@@ -167,17 +168,16 @@ def yay_install
   yay_packages = %w[]
   yay_packages.push("/usr/bin/yay -Syu #{install_yay_packages}")
 
-  yay_packages.each do |i|
-    Open3.pipeline i, in: $stdin, out: $stdout
-    puts $stdin
-    puts $stdout
-  end
+  to_install = InstallClass.new
+  to_install.install(yay_packages)
 end
 
 def stderr_check(stdout, stderr)
   # initialize --
   logger = Logger.new($stdout)
 
+  # error out ?
+  # what happpnedl spitt it out --
   return unless stderr == 1
 
   logger.error(stdout.read)
@@ -228,7 +228,7 @@ if __FILE__ == $PROGRAM_NAME
     github_dir_struct
     install_base_packages
     install_blackarch_pacstrap
-    yay_install
+    install_yay
     install_oh_my_zsh
   rescue Slop::Error => e
     logger.error(e)
