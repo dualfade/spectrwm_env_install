@@ -69,8 +69,7 @@ def install_base_packages
 
   # base packages --
   base_packages = "spectrwm xorg fzf the_silver_searcher ranger neovim tmux \
-    xterm alacritty alacritty-themes bmz-cursor-theme-git vimix-icon-theme \
-    arc-gtk-theme neofetch"
+    xterm alacritty fakeroot"
 
   cmd = "/usr/bin/sudo /usr/bin/pacman -Sy #{base_packages}"
   Open3.pipeline cmd, in: $stdin, out: $stdout
@@ -144,9 +143,32 @@ def install_blackarch_pacstrap
   end
 end
 
-def post_install
-  # placeholder --
+def yay_install
+  # install yay package manager; other packages --
   # clear pacman cache --
+  logger = Logger.new($stdout)
+  logger.info('yay install => yay')
+  logger.info('note => add your custom apps to the array')
+
+  # first things first; install yay --
+  cmd = '/usr/bin/sudo /usr/bin/pacman -Syu yay'
+  Open3.pipeline cmd, in: $stdin, out: $stdout
+  puts $stdin
+  puts $stdout
+
+  # next; yay package array --
+  # install apps --
+  install_yay_packages = "alacritty-themes bmz-cursor-theme-git vimix-icon-theme \
+    arc-gtk-theme neofetch"
+
+  yay_packages = %w[]
+  yay_packages.push("/usr/bin/yay -Syu #{install_yay_packages}")
+
+  yay_packages.each do |i|
+    Open3.pipeline i, in: $stdin, out: $stdout
+    puts $stdin
+    puts $stdout
+  end
 end
 
 def stderr_check(stdout, stderr)
@@ -203,6 +225,7 @@ if __FILE__ == $PROGRAM_NAME
     github_dir_struct
     install_base_packages
     install_blackarch_pacstrap
+    yay_install
     install_oh_my_zsh
   rescue Slop::Error => e
     logger.error(e)
