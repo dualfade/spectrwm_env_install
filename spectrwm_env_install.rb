@@ -176,11 +176,8 @@ def install_yay
   install_yay_packages = "alacritty-themes bmz-cursor-theme-git vimix-icon-theme \
     arc-gtk-theme neofetch"
 
-  yay_packages = %w[]
-  yay_packages.push("/usr/bin/yay -Sy #{install_yay_packages}")
-
   to_install = InstallClass.new
-  to_install.yay_installer(yay_packages)
+  to_install.yay_installer(install_yay_packages)
 end
 
 def stderr_check(stdout, stderr)
