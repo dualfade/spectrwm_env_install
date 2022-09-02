@@ -33,14 +33,20 @@ logger.formatter = proc { |severity, datetime, progname, msg|
 
 # class --
 class InstallClass
-  # compact code; loop install --
   # rinse and repeat --
   logger = Logger.new($stdout)
   logger.info('init => class installation')
 
-  def install(packages)
-    # install package array --
+  def pacman_installer(packages)
     cmd = "/usr/bin/sudo /usr/bin/pacman -Sy #{packages}"
+    Open3.pipeline cmd, in: $stdin, out: $stdout
+
+    # stderr check --
+    stderr_check($stdin, $stderr)
+  end
+
+  def yay_installer(packages)
+    cmd = "/usr/bin/yay -Sy #{packages}"
     Open3.pipeline cmd, in: $stdin, out: $stdout
 
     # stderr check --
@@ -92,7 +98,7 @@ def install_base_packages
     xterm alacritty fakeroot"
 
   to_install = InstallClass.new
-  to_install.install(base_packages)
+  to_install.pacman_installer(base_packages)
 end
 
 def install_oh_my_zsh
@@ -103,8 +109,7 @@ def install_oh_my_zsh
   logger.info('url => https://ohmyz.sh/#install')
   cmd = 'sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"'
   Open3.pipeline cmd, in: $stdin, out: $stdout
-  puts $stdin
-  puts $stdout
+  stderr_check($stdin, $stderr)
 
   # zsh plugins --
   zsh_auto = 'git clone https://github.com/zsh-users/zsh-autosuggestions.git \
@@ -117,7 +122,7 @@ def install_oh_my_zsh
   zsh_plugins.push(zsh_auto, zsh_syntax)
   zsh_plugins.each do |i|
     Open3.pipeline i, in: $stdin, out: $stdout
-    stderr_check($stderr, $stdin)
+    stderr_check($stdin, $stderr)
   end
 end
 
@@ -132,7 +137,7 @@ def install_pacstrap
   logger.info('enablng => blackarch repositories')
 
   # array commands --
-  ba_strap_file = '/usr/bin/curl -O https://blackarch.org/strap.sh'
+  ba_strap_file = '/usr/bin/curl https://blackarch.org/strap.sh -o ${PWD}/strap.sh'
   ba_sha1_checksum = '/bin/echo 5ea40d49ecd14c2e024deecf90605426db97ea0c strap.sh \
     | /usr/bin/sha1sum -c'
   ba_set_perms = '/usr/bin/chmod +x strap.sh'
@@ -157,7 +162,11 @@ def install_yay
   logger.info('note => add your custom apps to the array')
 
   # first things first; install yay --
-  cmd = '/usr/bin/sudo /usr/bin/pacman -Syu yay'
+  to_install = InstallClass.new
+  to_install.pacman_installer('yay')
+
+  # update yay; rebuild db --
+  cmd = '/usr/bin/yay -Syu'
   Open3.pipeline cmd, in: $stdin, out: $stdout
   stderr_check($stdin, $stderr)
 
@@ -168,10 +177,10 @@ def install_yay
     arc-gtk-theme neofetch"
 
   yay_packages = %w[]
-  yay_packages.push("/usr/bin/yay -Syu #{install_yay_packages}")
+  yay_packages.push("/usr/bin/yay -Sy #{install_yay_packages}")
 
   to_install = InstallClass.new
-  to_install.install(yay_packages)
+  to_install.yay_installer(yay_packages)
 end
 
 def stderr_check(stdout, stderr)
