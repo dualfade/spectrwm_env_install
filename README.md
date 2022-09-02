@@ -7,6 +7,6 @@ The theming in configs/ relies on nerd-fonts, so.. be sure to install them if yo
 use them --
 yay -S nerd-fonts-complete
 
-TODO: =>
-Move Open3.pipeline to a class function; compress and cleanup code
+#TODO:
+add configs --
 ```
