@@ -183,8 +183,8 @@ def install_yay
   # enable ly.service; disable getty@tty2.service --
   # we still want multi ttys --
   logger.info('enable => ly login manager')
-  ly_service = 'sudo /usr/bin/systemctl enable ly.service'
-  ly_getty = 'sudo /usr/bin/systemctl disable getty@tty2.service'
+  ly_service = '/usr/bin/sudo /usr/bin/systemctl enable ly.service'
+  ly_getty = '/usr/bin/sudo /usr/bin/systemctl disable getty@tty2.service'
 
   ly_services = %w[]
   ly_services.push(ly_service, ly_getty)
