@@ -95,7 +95,7 @@ def install_base_packages
 
   # base packages --
   base_packages = "spectrwm xorg fzf the_silver_searcher ranger neovim tmux \
-    xterm alacritty fakeroot"
+    xterm alacritty fakeroot base-devel"
 
   to_install = InstallClass.new
   to_install.pacman_installer(base_packages)
@@ -174,7 +174,7 @@ def install_yay
   # install apps --
   logger.info('yay => install packages')
   install_yay_packages = "alacritty-themes bmz-cursor-theme-git vimix-icon-theme \
-    arc-gtk-theme neofetch"
+    arc-gtk-theme neofetch ly"
 
   to_install = InstallClass.new
   to_install.yay_installer(install_yay_packages)
