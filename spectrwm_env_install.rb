@@ -178,14 +178,27 @@ def install_yay
 
   to_install = InstallClass.new
   to_install.yay_installer(install_yay_packages)
+
+  # NOTE: needs cleanup --
+  # enable ly.service; disable getty@tty2.service --
+  # we still want multi ttys --
+  logger.info('enable => ly login manager')
+  ly_service = 'sudo /usr/bin/systemctl enable ly.service'
+  ly_getty = 'sudo /usr/bin/systemctl disable getty@tty2.service'
+
+  ly_services = %w[]
+  ly_services.push(ly_service, ly_getty)
+  Open3.pipeline ly_services, in: $stdin, out: $stdout
+  stderr_check($stdin, $stderr)
+  logger.info('services => done')
 end
 
 def stderr_check(stdout, stderr)
   # initialize --
   logger = Logger.new($stdout)
 
-  # error out ?
-  # what happpnedl spitt it out --
+  # errors ?
+  # what happpned; spit it out --
   return unless stderr == 1
 
   logger.error(stdout.read)
