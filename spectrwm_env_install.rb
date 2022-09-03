@@ -42,7 +42,7 @@ class InstallClass
     Open3.pipeline cmd, in: $stdin, out: $stdout
 
     # stderr check --
-    stderr_check($stdin, $stderr)
+    stderr_check($stdin, $stdout)
   end
 
   def yay_installer(packages)
@@ -50,7 +50,7 @@ class InstallClass
     Open3.pipeline cmd, in: $stdin, out: $stdout
 
     # stderr check --
-    stderr_check($stdin, $stderr)
+    stderr_check($stdin, $stdout)
   end
 end
 
@@ -109,7 +109,7 @@ def install_oh_my_zsh
   logger.info('url => https://ohmyz.sh/#install')
   cmd = 'sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"'
   Open3.pipeline cmd, in: $stdin, out: $stdout
-  stderr_check($stdin, $stderr)
+  stderr_check($stdin, $stdout)
 
   # zsh plugins --
   zsh_auto = 'git clone https://github.com/zsh-users/zsh-autosuggestions.git \
@@ -122,7 +122,7 @@ def install_oh_my_zsh
   zsh_plugins.push(zsh_auto, zsh_syntax)
   zsh_plugins.each do |i|
     Open3.pipeline i, in: $stdin, out: $stdout
-    stderr_check($stdin, $stderr)
+    stderr_check($stdin, $stdout)
   end
 end
 
@@ -150,7 +150,7 @@ def install_pacstrap
 
   ba_pacstrap.each do |i|
     Open3.pipeline i, in: $stdin, out: $stdout
-    stderr_check($stdin, $stderr)
+    stderr_check($stdin, $stdout)
   end
 end
 
@@ -168,7 +168,7 @@ def install_yay
   # update yay; rebuild db --
   cmd = '/usr/bin/yay -Syu'
   Open3.pipeline cmd, in: $stdin, out: $stdout
-  stderr_check($stdin, $stderr)
+  stderr_check($stdin, $stdout)
 
   # next; yay package array --
   # install apps --
@@ -178,18 +178,20 @@ def install_yay
 
   to_install = InstallClass.new
   to_install.yay_installer(install_yay_packages)
+end
 
-  # NOTE: needs cleanup --
+def install_ly_service
+  # https://github.com/fairyglade/ly --
   # enable ly.service; disable getty@tty2.service --
   # we still want multi ttys --
   logger.info('enable => ly login manager')
   ly_service = '/usr/bin/sudo /usr/bin/systemctl enable ly.service'
-  ly_getty = '/usr/bin/sudo /usr/bin/systemctl disable getty@tty2.service'
+  Open3.pipeline ly_service, in: $stdin, out: $stdout
+  stderr_check($stdin, $stdout)
 
-  ly_services = %w[]
-  ly_services.push(ly_service, ly_getty)
-  Open3.pipeline ly_services, in: $stdin, out: $stdout
-  stderr_check($stdin, $stderr)
+  ly_getty = '/usr/bin/sudo /usr/bin/systemctl disable getty@tty2.service'
+  Open3.pipeline ly_getty, in: $stdin, out: $stdout
+  stderr_check($stdin, $stdout)
   logger.info('services => done')
 end
 
@@ -250,6 +252,7 @@ if __FILE__ == $PROGRAM_NAME
     install_base_packages
     install_pacstrap
     install_yay
+    install_ly_service
     install_oh_my_zsh
   rescue Slop::Error => e
     logger.error(e)
