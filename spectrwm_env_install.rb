@@ -22,6 +22,8 @@ gemfile do
   gem 'open3', require: true
   gem 'slop', require: true
   gem 'logger', require: true
+  gem 'nokogiri', require: true
+  gem 'open-uri', require: true
 end
 
 # logging --
@@ -136,10 +138,13 @@ def install_pacstrap
   logger = Logger.new($stdout)
   logger.info('enablng => blackarch repositories')
 
+  # fetch sha1sum cmd --
+  # we do not want to keep modifying this for a changing checksum --
+  page = Nokogiri::HTML(URI.open('https://blackarch.org/downloads.html'))
+  ba_sha1_checksum = page.xpath('/html/body/div/div[2]/div[2]/div[3]/ul/li/div[1]/span[2]').text
+
   # array commands --
   ba_strap_file = '/usr/bin/curl https://blackarch.org/strap.sh -o ${PWD}/strap.sh'
-  ba_sha1_checksum = '/bin/echo 5ea40d49ecd14c2e024deecf90605426db97ea0c strap.sh \
-    | /usr/bin/sha1sum -c'
   ba_set_perms = '/usr/bin/chmod +x strap.sh'
   ba_run_sudo = '/usr/bin/sudo ./strap.sh'
   ba_pacman_update = '/usr/bin/sudo pacman -Syu'
