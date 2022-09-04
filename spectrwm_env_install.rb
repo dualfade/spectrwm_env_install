@@ -97,7 +97,7 @@ def install_base_packages
 
   # base packages --
   base_packages = "spectrwm xorg fzf the_silver_searcher ranger neovim tmux \
-    xterm alacritty fakeroot base-devel"
+    xterm alacritty fakeroot base-devel shellcheck"
 
   to_install = InstallClass.new
   to_install.pacman_installer(base_packages)
