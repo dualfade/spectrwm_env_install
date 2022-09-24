@@ -96,7 +96,7 @@ def install_base_packages
     5/ParallelDownloads = 5/g' #{pac_file}"]))
 
   # base packages --
-  base_packages = "spectrwm xorg fzf the_silver_searcher ranger neovim tmux \
+  base_packages = "spectrwm xorg base-devel fzf the_silver_searcher ranger neovim tmux \
     xterm alacritty fakeroot base-devel aspell shellcheck"
 
   to_install = InstallClass.new
