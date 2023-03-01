@@ -1,7 +1,9 @@
 - README.md
 
 ```Leaving installer default with essentials.
+Always read things before blindly copying --
 Copy config(s) into place and modify if you wish to use them.
+Verify Correct Username in config paths --
 
 - spectrwm --
   NOTE: Update custom spectrwm_post_run.sh with your requirements --
