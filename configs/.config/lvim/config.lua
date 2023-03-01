@@ -15,15 +15,37 @@ an executable
 lvim.log.level = "warn"
 lvim.format_on_save = true
 
--- theme
+-- set custom theme
 -- https://github.com/folke/tokyonight.nvim
 lvim.colorscheme = "tokyonight"
+lvim.builtin.lualine.options.theme = "tokyonight"
 
--- cursor-line
-lvim.line_wrap_cursor_movement = false
+-- lvim.colorscheme = "duskfox"
+-- lvim.colorscheme = "carbonfox"
 
--- disable mouse
-vim.opt.mouse = ''
+require('nightfox').setup({
+  options = {
+    styles = {
+      comments = "italic",
+      keywords = "bold",
+      types = "italic,bold",
+    }
+  }
+})
+
+-- https://www.lunarvim.org/docs/configuration/statusline
+lvim.builtin.lualine.style = "lvim"
+lvim.builtin.lualine.sections.lualine_c = { "diff" }
+
+-- enable mouse --
+vim.opt.mouse = 'a'
+
+-- disable mouse --
+-- vim.opt.mouse = ''
+
+-- disable top tab(s) line
+-- https://vimhelp.org/options.txt.html
+vim.opt.showtabline = 0
 
 -- disable cursor wrapping; whichwrap --
 -- vim.opt.ww = ''
@@ -86,7 +108,7 @@ lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
-lvim.builtin.notify.active = true
+-- lvim.builtin.notify.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
@@ -112,12 +134,17 @@ lvim.builtin.treesitter.ensure_installed = {
 lvim.builtin.treesitter.ignore_install = { "haskell" }
 lvim.builtin.treesitter.highlight.enabled = true
 
+-- needed for matchup
+-- this should be a default with lunavrim settings
+-- https://github.com/andymass/vim-matchup/issues/262
+lvim.builtin.treesitter.matchup.enable = true
+
 -- generic LSP settings
 
 -- ---@usage disable automatic installation of servers
 -- lvim.lsp.automatic_servers_installation = false
 
--- ---@usage Select which servers should be configured manually. Requires `:LvimCacheReset` to take effect.
+-- ---@usage Select which servers should be configured manually. dependencies `:LvimCacheReset` to take effect.
 -- See the full default list `:lua print(vim.inspect(lvim.lsp.override))`
 -- vim.list_extend(lvim.lsp.override, { "pyright" })
 
@@ -154,10 +181,38 @@ lvim.builtin.treesitter.highlight.enabled = true
 --   },
 -- }
 
--- ruby solargraph fix --
+-- NOTE: ruby solargraph fix --
 -- https://github.com/LunarVim/LunarVim/issues/945 --
 require('lspconfig').solargraph.setup {
-  cmd = { "solargraph", "stdio" }
+  cmd = { "/home/dualfade/.local/share/gem/ruby/3.0.0/bin/solargraph", "stdio" },
+  -- cmd = { "/home/dualfade/.local/share/gem/ruby/3.0.0/bin/solargraph", "socket", "7658" },
+  -- system solargraph --
+  -- cmd = { "/usr/bin/solargraph", "stdio" },
+}
+
+-- NOTE: enable sorbet-runtime
+-- https://sorbet.org/
+-- swiped and mod from; https://lsp.sublimetext.io/language_servers/#sorbet
+-- require("lspconfig").sorbet.setup {
+--   cmd = {
+--     "srb", "tc", "--typed", "true", "--enable-all-experimental-lsp-features", "--lsp", "--disable-watchman"
+--   },
+-- }
+
+-- NOTE: 22:27 briain@d
+-- fix telescope window sizing --
+-- ref: https://github.com/nvim-telescope/telescope.nvim --
+lvim.builtin.telescope.pickers = {
+  find_files = {
+    layout_config = {
+      vertical = { width = 0.5 }
+    },
+  },
+  live_grep = {
+    layout_config = {
+      width = 0.5,
+    },
+  },
 }
 
 -- https://github.com/LunarVim/LunarVim/issues/1747
@@ -198,31 +253,36 @@ linters.setup {
   {
     command = "codespell",
     ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
-    filetypes = { "javascript", "python", "ruby" },
+    filetypes = { "javascript", "python", "ruby", "eruby", "go" },
   },
 }
 
 -- Additional Plugins
 lvim.plugins = {
-  { "catppuccin/nvim" },
-  { "folke/tokyonight.nvim" },
+  -- https://github.com/EdenEast/nightfox.nvim
   { "EdenEast/nightfox.nvim" },
-  { "projekt0n/github-nvim-theme" },
-  { "honza/vim-snippets" },
+  -- https://github.com/andymass/vim-matchup
   {
-    "SirVer/ultisnips",
-    requires = 'honza/vim-snippets', rtp = '.',
+    "andymass/vim-matchup",
+    event = "CursorMoved",
     config = function()
-      vim.g.UltiSnipsExpandTrigger = '<Plug>(ultisnips_expand)'
-      vim.g.UltiSnipsJumpForwardTrigger = '<Plug>(ultisnips_jump_forward)'
-      vim.g.UltiSnipsJumpBackwardTrigger = '<Plug>(ultisnips_jump_backward)'
-      vim.g.UltiSnipsListSnippets = '<c-x><c-s>'
-      vim.g.UltiSnipsRemoveSelectModeMappings = 0
-    end
+      vim.g.matchup_matchparen_offscreen = { method = "popup" }
+    end,
   },
-  { "folke/trouble.nvim", cmd = "TroubleToggle" },
+  { "folke/trouble.nvim",      cmd = "TroubleToggle" },
   { "thaerkh/vim-indentguides" },
   { "cappyzawa/trim.nvim" },
+  -- https://github.com/wfxr/minimap.vim
+  {
+    'wfxr/minimap.vim',
+    build = "cargo install --locked code-minimap",
+    cmd = { "Minimap", "MinimapClose", "MinimapToggle", "MinimapRefresh", "MinimapUpdateHighlight" },
+    config = function()
+      vim.cmd("let g:minimap_width = 20")
+      vim.cmd("let g:minimap_auto_start = 1")
+      vim.cmd("let g:minimap_auto_start_win_enter = 1")
+    end,
+  },
 
   -- https://github.com/folke/todo-comments.nvim
   {
@@ -232,18 +292,114 @@ lvim.plugins = {
       require("todo-comments").setup()
     end,
   },
-  -- https://github.com/mattn/vim-gist
-  -- https://www.lunarvim.org/plugins/02-extra-plugins.html#vim-gist
-  {
-    "mattn/vim-gist",
-    event = "BufRead",
-    requires = "mattn/webapi-vim",
-  },
   -- https://prettier.io/
   -- yain prettier
   -- :Prettier
   { "prettier/vim-prettier" },
+  -- https://github.com/sindrets/diffview.nvim
+  { 'sindrets/diffview.nvim',   dependencies = 'nvim-lua/plenary.nvim' },
+  -- https://github.com/honza/vim-snippets
+  { "honza/vim-snippets" },
+  -- https://github.com/SirVer/ultisnips
+  -- {
+  --   "SirVer/ultisnips",
+  --   dependencies = 'honza/vim-snippets', rtp = '.',
+  --   config = function()
+  --     vim.g.UltiSnipsExpandTrigger = '<Plug>(ultisnips_expand)'
+  --     vim.g.UltiSnipsJumpForwardTrigger = '<Plug>(ultisnips_jump_forward)'
+  --     vim.g.UltiSnipsJumpBackwardTrigger = '<Plug>(ultisnips_jump_backward)'
+  --     vim.g.UltiSnipsListSnippets = '<c-x><c-s>'
+  --     vim.g.UltiSnipsRemoveSelectModeMappings = 0
+  --   end
+  -- },
+  -- https://github.com/CRAG666/code_runner.nvim
+  { 'CRAG666/code_runner.nvim', dependencies = 'nvim-lua/plenary.nvim' },
+  --NOTE: check this tomorrow  / 022520231 --
+  -- https://github.com/mfussenegger/nvim-dap --
+  -- https://github.com/mfussenegger/nvim-dap/wiki/Debug-Adapter-installation --
+  { 'mfussenegger/nvim-dap' },
+  { "rcarriga/nvim-dap-ui",     dependencies = { "mfussenegger/nvim-dap" } },
 }
+-- end func
+
+--NOTE: this may not be working right now --
+-- https://github.com/rcarriga/nvim-dap-ui --
+-- require("neodev").setup({
+--   library = { plugins = { "nvim-dap-ui" }, types = true },
+-- })
+-- require("dapui").setup()
+
+-- Dap debugger --
+-- https://github.com/mfussenegger/nvim-dap/wiki/Debug-Adapter-installation#javascript --
+local dap = require('dap')
+dap.adapters.node2 = {
+  type = 'executable',
+  command = 'node',
+  args = { os.getenv('HOME') .. '/dev/microsoft/vscode-node-debug2/out/src/nodeDebug.js' },
+}
+dap.configurations.javascript = {
+  {
+    name = 'Launch',
+    type = 'node2',
+    request = 'launch',
+    program = '${file}',
+    cwd = vim.fn.getcwd(),
+    sourceMaps = true,
+    protocol = 'inspector',
+    console = 'integratedTerminal',
+  },
+  {
+    -- For this to work you need to make sure the node process is started with the `--inspect` flag.
+    name = 'Attach to process',
+    type = 'node2',
+    request = 'attach',
+    processId = require 'dap.utils'.pick_process,
+  },
+}
+
+-- https://github.com/folke/trouble.nvim
+lvim.builtin.which_key.mappings["t"] = {
+      name = "Diagnostics",
+      t = { "<cmd>TroubleToggle<cr>", "trouble" },
+      w = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "workspace" },
+      d = { "<cmd>TroubleToggle document_diagnostics<cr>", "document" },
+      q = { "<cmd>TroubleToggle quickfix<cr>", "quickfix" },
+      l = { "<cmd>TroubleToggle loclist<cr>", "loclist" },
+      r = { "<cmd>TroubleToggle lsp_references<cr>", "references" },
+    },
+
+    -- call trim after plugin load --
+    -- https://github.com/cappyzawa/trim.nvim
+    require('trim').setup({
+      -- if you want to ignore markdown file.
+      -- you can specify filetypes.
+      disable = { "markdown" },
+      -- if you want to ignore space of top
+      patterns = {
+        [[%s/\s\+$//e]],
+        [[%s/\($\n\s*\)\+\%$//]],
+        [[%s/\(\n\n\)\n\+/\1/]],
+      },
+    })
+
+-- call code_runner after plugin loads --
+require('code_runner').setup({
+  -- put here the commands by filetype
+  filetype = {
+    -- java = "cd $dir && javac $fileName && java $fileNameWithoutExt",
+    -- disable def; can hang and make biffer go crazy --
+    -- python = "python3 -u",
+    python = "cd $dir && python $fileName",
+    typescript = "deno run",
+    rust = "cd $dir && rustc $fileName && $dir/$fileNameWithoutExt",
+    ruby = "cd $dir && ruby $fileName",
+    go = "cd $dir && go run $fileName",
+    -- launch node w/wo debugger; custom --
+    -- javascript = "cd $dir && node $fileName"
+    javascript = "cd $dir && node inspect $fileName"
+    -- javascript = "cd $dir && /usr/bin/node --inspect /home/dualfade/Scripts/Src/Node/contact/node_modules/forever/bin/forever $fileName"
+  },
+})
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 -- lvim.autocommands.custom_groups = {
