@@ -15,23 +15,33 @@ an executable
 lvim.log.level = "warn"
 lvim.format_on_save = true
 
+-- default --
+-- lvim.colorscheme = "lunar"
+
 -- set custom theme
 -- https://github.com/folke/tokyonight.nvim
 lvim.colorscheme = "tokyonight"
 lvim.builtin.lualine.options.theme = "tokyonight"
 
+-- lvim.colorscheme = "onenord"
+-- lvim.builtin.lualine.options.theme = "onenord"
+
+-- https://github.com/EdenEast/nightfox.nvim
+-- lvim.colorscheme = "nightfox"
 -- lvim.colorscheme = "duskfox"
+-- lvim.colorscheme = "nordfox"
+-- lvim.colorscheme = "terafox"
 -- lvim.colorscheme = "carbonfox"
 
-require('nightfox').setup({
-  options = {
-    styles = {
-      comments = "italic",
-      keywords = "bold",
-      types = "italic,bold",
-    }
-  }
-})
+-- require('nightfox').setup({
+--   options = {
+--     styles = {
+--       comments = "italic",
+--       keywords = "bold",
+--       types = "italic,bold",
+--     }
+--   }
+-- })
 
 -- https://www.lunarvim.org/docs/configuration/statusline
 lvim.builtin.lualine.style = "lvim"
@@ -261,6 +271,10 @@ linters.setup {
 lvim.plugins = {
   -- https://github.com/EdenEast/nightfox.nvim
   { "EdenEast/nightfox.nvim" },
+  -- tiagovla/tokyodark.nvim
+  -- { 'tiagovla/tokyodark.nvim' },
+  -- https://github.com/rmehri01/onenord.nvim
+  { 'rmehri01/onenord.nvim' },
   -- https://github.com/andymass/vim-matchup
   {
     "andymass/vim-matchup",
@@ -317,8 +331,8 @@ lvim.plugins = {
   --NOTE: check this tomorrow  / 022520231 --
   -- https://github.com/mfussenegger/nvim-dap --
   -- https://github.com/mfussenegger/nvim-dap/wiki/Debug-Adapter-installation --
-  { 'mfussenegger/nvim-dap' },
-  { "rcarriga/nvim-dap-ui",     dependencies = { "mfussenegger/nvim-dap" } },
+  -- { 'mfussenegger/nvim-dap' },
+  -- { "rcarriga/nvim-dap-ui",     dependencies = { "mfussenegger/nvim-dap" } },
 }
 -- end func
 
@@ -331,31 +345,31 @@ lvim.plugins = {
 
 -- Dap debugger --
 -- https://github.com/mfussenegger/nvim-dap/wiki/Debug-Adapter-installation#javascript --
-local dap = require('dap')
-dap.adapters.node2 = {
-  type = 'executable',
-  command = 'node',
-  args = { os.getenv('HOME') .. '/dev/microsoft/vscode-node-debug2/out/src/nodeDebug.js' },
-}
-dap.configurations.javascript = {
-  {
-    name = 'Launch',
-    type = 'node2',
-    request = 'launch',
-    program = '${file}',
-    cwd = vim.fn.getcwd(),
-    sourceMaps = true,
-    protocol = 'inspector',
-    console = 'integratedTerminal',
-  },
-  {
-    -- For this to work you need to make sure the node process is started with the `--inspect` flag.
-    name = 'Attach to process',
-    type = 'node2',
-    request = 'attach',
-    processId = require 'dap.utils'.pick_process,
-  },
-}
+-- local dap = require('dap')
+-- dap.adapters.node2 = {
+--   type = 'executable',
+--   command = 'node',
+--   args = { os.getenv('HOME') .. '/dev/microsoft/vscode-node-debug2/out/src/nodeDebug.js' },
+-- }
+-- dap.configurations.javascript = {
+--   {
+--     name = 'Launch',
+--     type = 'node2',
+--     request = 'launch',
+--     program = '${file}',
+--     cwd = vim.fn.getcwd(),
+--     sourceMaps = true,
+--     protocol = 'inspector',
+--     console = 'integratedTerminal',
+--   },
+--   {
+--     -- For this to work you need to make sure the node process is started with the `--inspect` flag.
+--     name = 'Attach to process',
+--     type = 'node2',
+--     request = 'attach',
+--     processId = require 'dap.utils'.pick_process,
+--   },
+-- }
 
 -- https://github.com/folke/trouble.nvim
 lvim.builtin.which_key.mappings["t"] = {
@@ -373,7 +387,8 @@ lvim.builtin.which_key.mappings["t"] = {
     require('trim').setup({
       -- if you want to ignore markdown file.
       -- you can specify filetypes.
-      disable = { "markdown" },
+      -- disable = { "markdown" },
+      ft_blocklist = { "markdown" },
       -- if you want to ignore space of top
       patterns = {
         [[%s/\s\+$//e]],
@@ -395,8 +410,8 @@ require('code_runner').setup({
     ruby = "cd $dir && ruby $fileName",
     go = "cd $dir && go run $fileName",
     -- launch node w/wo debugger; custom --
-    -- javascript = "cd $dir && node $fileName"
-    javascript = "cd $dir && node inspect $fileName"
+    javascript = "cd $dir && node $fileName"
+    -- javascript = "cd $dir && node inspect $fileName"
     -- javascript = "cd $dir && /usr/bin/node --inspect /home/dualfade/Scripts/Src/Node/contact/node_modules/forever/bin/forever $fileName"
   },
 })

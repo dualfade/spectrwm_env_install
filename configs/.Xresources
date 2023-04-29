@@ -1,49 +1,60 @@
-! generic
-! *foreground:                  #cccccc
-! *background:                  #000000
+! xft
+Xft.antialias:	1
+Xft.hinting:	1
+Xft.autohint:	0
+Xft.hintstyle:	hintslight
+Xft.rgba:	rgb
+Xft.lcdfilter:	lcddefault
 
-! xterm
-xterm*VT100*geometry:         120x24
-xterm*faceName:               xft:xos4 JetBrainsMonoMedium:size=8:antialias=true
-xterm*faceSize:               8 
-xterm*renderFont:             true
-xterm*utf8:                   always
-xterm*utf8Title:              true
-xterm*locale:                 true
-xterm*cursorColor:            #5f5faf
-xterm*cursorBlink:            false
-xterm*selectToClipboard:      true
-xterm*SaveLines:              10000
-xterm*transparent:            true
-XTerm*trimSelection:          true
-XTerm*cutNewline:             false
-XTerm*highlightSelection:     true
+! terminal st.font
+st.font:         Hack Nerd Font:style:medium:pixelsize=10
+
+! window padding
+! st.borderpx: 20
+st.borderpx: 4
+
+!- 0.1 to 0.9 = transparency
+st.alpha: 1.0
 
 ! cursor
 Xcursor.theme:                BMZ-cursor
-Xcursor.size:                 12
+Xcursor.size:                 10
 
-! xft
-xft.antialias:                true
+! special
+! https://terminal.sexy/ --
+! Gotham dotshare --
+*.foreground:   #98d1ce
+*.background:   #0a0f14
+*.cursorColor:  #98d1ce
 
-! TokyoNight colors for Xresources
-*background: #1a1b26
-*foreground: #c0caf5
+! black
+*.color0:       #0a0f14
+*.color8:       #10151b
 
-*color0: #15161E
-*color1: #f7768e
-*color2: #9ece6a
-*color3: #e0af68
-*color4: #7aa2f7
-*color5: #bb9af7
-*color6: #7dcfff
-*color7: #a9b1d6
+! red
+*.color1:       #c33027
+*.color9:       #d26939
 
-*color8: #414868
-*color9: #f7768e
-*color10: #9ece6a
-*color11: #e0af68
-*color12: #7aa2f7
-*color13: #bb9af7
-*color14: #7dcfff
-*color15: #c0caf5
+! green
+*.color2:       #26a98b
+*.color10:      #081f2d
+
+! yellow
+*.color3:       #edb54b
+*.color11:      #245361
+
+! blue
+*.color4:       #195465
+*.color12:      #093748
+
+! magenta
+*.color5:       #4e5165
+*.color13:      #888ba5
+
+! cyan
+*.color6:       #33859d
+*.color14:      #599caa
+
+! white
+*.color7:       #98d1ce
+*.color15:      #d3ebe9
