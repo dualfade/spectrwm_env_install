@@ -57,12 +57,15 @@ vol() {
 #VPN
 
 vpn() {
+    # Nc='\033[0m'
+    # Red='\033[0;31m'
+    # Green='\033[0;32m'
     # state="$(ip a | grep 'wg0\|proton0\|tun0' | grep inet | wc -l)"
     state="$(ip a sh | grep -E "wg[0-9].*?|tun[0-9].*?" | grep -c inet)"
    if [ "$state" = 1 ]; then
-        echo "on"
+        echo -e "on"
     else
-        echo "off"
+        echo -e "off"
     fi
 }
 
@@ -132,6 +135,7 @@ universal_time() {
 SLEEP_SEC=2
 #loops forever outputting a line every SLEEP_SEC secs
     while :; do
-      echo "$(cpu) |  $(mem) |  $(hdd) |  $(vpn) |  $(vol) | $(bat) | $(network) | $(universal_time) |"
+      # echo "$(cpu) |  $(mem) |  $(hdd) |  $(vpn) |  $(vol) | $(bat) | $(network) | $(universal_time) |"
+      echo "+@fg=1; $(cpu) |  $(mem) |  $(hdd) |  $(vpn) |  $(vol) | $(bat) | $(network) +@fg=5; | $(universal_time) +@fg=0;|"
         sleep $SLEEP_SEC
     done

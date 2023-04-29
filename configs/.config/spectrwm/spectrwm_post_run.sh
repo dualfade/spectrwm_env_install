@@ -20,5 +20,5 @@
 /usr/bin/xrandr --output DP-3 --brightness 1.0
 
 # start other shit --
-/usr/bin/feh --bg-fill ~/.wallpaper/232568_scaled.jpg &
-/usr/bin/xrdb -merge ~/.Xresources &
+# /usr/bin/feh --bg-fill ~/.wallpaper/232568_scaled.jpg &
+# /usr/bin/xrdb -merge ~/.Xresources &
