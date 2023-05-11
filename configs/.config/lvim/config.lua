@@ -316,12 +316,22 @@ lvim.plugins = {
   -- :Prettier
   { "prettier/vim-prettier" },
   -- https://github.com/sindrets/diffview.nvim
-  { "sindrets/diffview.nvim",      dependencies = "nvim-lua/plenary.nvim" },
+  { "sindrets/diffview.nvim", dependencies = "nvim-lua/plenary.nvim" },
   -- https://github.com/rafamadriz/friendly-snippets --
   -- https://github.com/rafamadriz/friendly-snippets/wiki/Python --
-  { "rafamadriz/friendly-snippets" },
+  {
+    "rafamadriz/friendly-snippets",
+    config = function()
+      require("luasnip.loaders.from_vscode").lazy_load()
+    end,
+  },
+  -- https://github.com/rafamadriz/friendly-snippets --
+  {
+    "L3MON4D3/LuaSnip",
+    dependencies = { "rafamadriz/friendly-snippets" },
+  },
   -- https://github.com/CRAG666/code_runner.nvim
-  { "CRAG666/code_runner.nvim",    dependencies = "nvim-lua/plenary.nvim" },
+  { "CRAG666/code_runner.nvim", dependencies = "nvim-lua/plenary.nvim" },
 
   --NOTE: check this tomorrow  / 022520231 --
   -- https://github.com/mfussenegger/nvim-dap --
@@ -338,7 +348,10 @@ lvim.plugins = {
 }
 -- end func
 
+-- friendly-snippets extra requires --
+-- https://github.com/rafamadriz/friendly-snippets/wiki --
 require("luasnip").filetype_extend("typescript", { "javascript" })
+require 'luasnip'.filetype_extend("ruby", { "rails" })
 
 require("noice").setup({
   lsp = {
