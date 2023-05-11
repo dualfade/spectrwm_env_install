@@ -20,8 +20,12 @@ lvim.format_on_save = true
 
 -- set custom theme
 -- https://github.com/folke/tokyonight.nvim
-lvim.colorscheme = "tokyonight"
-lvim.builtin.lualine.options.theme = "tokyonight"
+-- lvim.colorscheme = "tokyonight"
+-- lvim.builtin.lualine.options.theme = "tokyonight"
+
+-- https://github.com/catppuccin/nvim --
+lvim.colorscheme = "catppuccin-macchiato"
+lvim.builtin.lualine.options.theme = "catppuccin"
 
 -- lvim.colorscheme = "onenord"
 -- lvim.builtin.lualine.options.theme = "onenord"
@@ -275,6 +279,7 @@ lvim.plugins = {
   -- { 'tiagovla/tokyodark.nvim' },
   -- https://github.com/rmehri01/onenord.nvim
   { "rmehri01/onenord.nvim" },
+  { "catppuccin/nvim" },
   -- https://github.com/andymass/vim-matchup
   {
     "andymass/vim-matchup",
@@ -311,23 +316,14 @@ lvim.plugins = {
   -- :Prettier
   { "prettier/vim-prettier" },
   -- https://github.com/sindrets/diffview.nvim
-  { "sindrets/diffview.nvim",   dependencies = "nvim-lua/plenary.nvim" },
+  { "sindrets/diffview.nvim",      dependencies = "nvim-lua/plenary.nvim" },
   -- https://github.com/honza/vim-snippets
-  { "honza/vim-snippets" },
-  -- https://github.com/SirVer/ultisnips
-  -- {
-  --   "SirVer/ultisnips",
-  --   dependencies = 'honza/vim-snippets', rtp = '.',
-  --   config = function()
-  --     vim.g.UltiSnipsExpandTrigger = '<Plug>(ultisnips_expand)'
-  --     vim.g.UltiSnipsJumpForwardTrigger = '<Plug>(ultisnips_jump_forward)'
-  --     vim.g.UltiSnipsJumpBackwardTrigger = '<Plug>(ultisnips_jump_backward)'
-  --     vim.g.UltiSnipsListSnippets = '<c-x><c-s>'
-  --     vim.g.UltiSnipsRemoveSelectModeMappings = 0
-  --   end
-  -- },
+  -- { "honza/vim-snippets" },
+  -- https://github.com/rafamadriz/friendly-snippets --
+  { "rafamadriz/friendly-snippets" },
   -- https://github.com/CRAG666/code_runner.nvim
-  { "CRAG666/code_runner.nvim", dependencies = "nvim-lua/plenary.nvim" },
+  { "CRAG666/code_runner.nvim",    dependencies = "nvim-lua/plenary.nvim" },
+
   --NOTE: check this tomorrow  / 022520231 --
   -- https://github.com/mfussenegger/nvim-dap --
   -- https://github.com/mfussenegger/nvim-dap/wiki/Debug-Adapter-installation --
@@ -342,6 +338,8 @@ lvim.plugins = {
   { "folke/noice.nvim" },
 }
 -- end func
+
+require("luasnip").filetype_extend("typescript", { "javascript" })
 
 require("noice").setup({
   lsp = {
