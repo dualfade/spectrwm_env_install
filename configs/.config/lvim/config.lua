@@ -317,9 +317,8 @@ lvim.plugins = {
   { "prettier/vim-prettier" },
   -- https://github.com/sindrets/diffview.nvim
   { "sindrets/diffview.nvim",      dependencies = "nvim-lua/plenary.nvim" },
-  -- https://github.com/honza/vim-snippets
-  -- { "honza/vim-snippets" },
   -- https://github.com/rafamadriz/friendly-snippets --
+  -- https://github.com/rafamadriz/friendly-snippets/wiki/Python --
   { "rafamadriz/friendly-snippets" },
   -- https://github.com/CRAG666/code_runner.nvim
   { "CRAG666/code_runner.nvim",    dependencies = "nvim-lua/plenary.nvim" },
