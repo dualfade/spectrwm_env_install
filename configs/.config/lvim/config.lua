@@ -48,7 +48,7 @@ lvim.builtin.lualine.style = "lvim"
 lvim.builtin.lualine.sections.lualine_c = { "diff" }
 
 -- enable mouse --
-vim.opt.mouse = 'a'
+vim.opt.mouse = "a"
 
 -- disable mouse --
 -- vim.opt.mouse = ''
@@ -193,12 +193,12 @@ lvim.builtin.treesitter.matchup.enable = true
 
 -- NOTE: ruby solargraph fix --
 -- https://github.com/LunarVim/LunarVim/issues/945 --
-require('lspconfig').solargraph.setup {
+require("lspconfig").solargraph.setup({
   cmd = { "/home/dualfade/.local/share/gem/ruby/3.0.0/bin/solargraph", "stdio" },
   -- cmd = { "/home/dualfade/.local/share/gem/ruby/3.0.0/bin/solargraph", "socket", "7658" },
   -- system solargraph --
   -- cmd = { "/usr/bin/solargraph", "stdio" },
-}
+})
 
 -- NOTE: enable sorbet-runtime
 -- https://sorbet.org/
@@ -215,7 +215,7 @@ require('lspconfig').solargraph.setup {
 lvim.builtin.telescope.pickers = {
   find_files = {
     layout_config = {
-      vertical = { width = 0.5 }
+      vertical = { width = 0.5 },
     },
   },
   live_grep = {
@@ -226,8 +226,8 @@ lvim.builtin.telescope.pickers = {
 }
 
 -- https://github.com/LunarVim/LunarVim/issues/1747
-local formatters = require "lvim.lsp.null-ls.formatters"
-formatters.setup {
+local formatters = require("lvim.lsp.null-ls.formatters")
+formatters.setup({
   {
     command = "prettier",
     extra_args = { "--print-with", "100" },
@@ -241,17 +241,17 @@ formatters.setup {
       "markdown",
     },
   },
-}
+})
 
 -- -- set additional linters
-local linters = require "lvim.lsp.null-ls.linters"
-linters.setup {
+local linters = require("lvim.lsp.null-ls.linters")
+linters.setup({
   {
     command = "eslint_d",
     filetypes = { "typescript", "typescriptreact" },
   },
-}
-linters.setup {
+})
+linters.setup({
   -- { command = "flake8", filetypes = { "python" } },
   {
     -- each linter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
@@ -265,7 +265,7 @@ linters.setup {
     ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
     filetypes = { "javascript", "python", "ruby", "eruby", "go" },
   },
-}
+})
 
 -- Additional Plugins
 lvim.plugins = {
@@ -274,7 +274,7 @@ lvim.plugins = {
   -- tiagovla/tokyodark.nvim
   -- { 'tiagovla/tokyodark.nvim' },
   -- https://github.com/rmehri01/onenord.nvim
-  { 'rmehri01/onenord.nvim' },
+  { "rmehri01/onenord.nvim" },
   -- https://github.com/andymass/vim-matchup
   {
     "andymass/vim-matchup",
@@ -287,16 +287,16 @@ lvim.plugins = {
   { "thaerkh/vim-indentguides" },
   { "cappyzawa/trim.nvim" },
   -- https://github.com/wfxr/minimap.vim
-  {
-    'wfxr/minimap.vim',
-    build = "cargo install --locked code-minimap",
-    cmd = { "Minimap", "MinimapClose", "MinimapToggle", "MinimapRefresh", "MinimapUpdateHighlight" },
-    config = function()
-      vim.cmd("let g:minimap_width = 20")
-      vim.cmd("let g:minimap_auto_start = 1")
-      vim.cmd("let g:minimap_auto_start_win_enter = 1")
-    end,
-  },
+  -- {
+  --   "wfxr/minimap.vim",
+  --   build = "cargo install --locked code-minimap",
+  --   cmd = { "Minimap", "MinimapClose", "MinimapToggle", "MinimapRefresh", "MinimapUpdateHighlight" },
+  --   config = function()
+  --     vim.cmd("let g:minimap_width = 20")
+  --     vim.cmd("let g:minimap_auto_start = 1")
+  --     vim.cmd("let g:minimap_auto_start_win_enter = 1")
+  --   end,
+  -- },
 
   -- https://github.com/folke/todo-comments.nvim
   {
@@ -311,7 +311,7 @@ lvim.plugins = {
   -- :Prettier
   { "prettier/vim-prettier" },
   -- https://github.com/sindrets/diffview.nvim
-  { 'sindrets/diffview.nvim',   dependencies = 'nvim-lua/plenary.nvim' },
+  { "sindrets/diffview.nvim",   dependencies = "nvim-lua/plenary.nvim" },
   -- https://github.com/honza/vim-snippets
   { "honza/vim-snippets" },
   -- https://github.com/SirVer/ultisnips
@@ -327,14 +327,40 @@ lvim.plugins = {
   --   end
   -- },
   -- https://github.com/CRAG666/code_runner.nvim
-  { 'CRAG666/code_runner.nvim', dependencies = 'nvim-lua/plenary.nvim' },
+  { "CRAG666/code_runner.nvim", dependencies = "nvim-lua/plenary.nvim" },
   --NOTE: check this tomorrow  / 022520231 --
   -- https://github.com/mfussenegger/nvim-dap --
   -- https://github.com/mfussenegger/nvim-dap/wiki/Debug-Adapter-installation --
   -- { 'mfussenegger/nvim-dap' },
   -- { "rcarriga/nvim-dap-ui",     dependencies = { "mfussenegger/nvim-dap" } },
+
+  -- https://github.com/MunifTanjim/nui.nvim --
+  -- https://github.com/rcarriga/nvim-notify --
+  -- https://github.com/folke/noice.nvim --
+  { "MunifTanjim/nui.nvim" },
+  { "rcarriga/nvim-notify" },
+  { "folke/noice.nvim" },
 }
 -- end func
+
+require("noice").setup({
+  lsp = {
+    -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+    override = {
+      ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+      ["vim.lsp.util.stylize_markdown"] = true,
+      ["cmp.entry.get_documentation"] = true,
+    },
+  },
+  -- you can enable a preset for easier configuration
+  presets = {
+    bottom_search = true,         -- use a classic bottom cmdline for search
+    command_palette = true,       -- position the cmdline and popupmenu together
+    long_message_to_split = true, -- long messages will be sent to a split
+    inc_rename = false,           -- enables an input dialog for inc-rename.nvim
+    lsp_doc_border = false,       -- add a border to hover docs and signature help
+  },
+})
 
 --NOTE: this may not be working right now --
 -- https://github.com/rcarriga/nvim-dap-ui --
@@ -372,7 +398,8 @@ lvim.plugins = {
 -- }
 
 -- https://github.com/folke/trouble.nvim
-lvim.builtin.which_key.mappings["t"] = {
+lvim.builtin.which_key.mappings["t"] =
+    {
       name = "Diagnostics",
       t = { "<cmd>TroubleToggle<cr>", "trouble" },
       w = { "<cmd>TroubleToggle workspace_diagnostics<cr>", "workspace" },
@@ -381,10 +408,9 @@ lvim.builtin.which_key.mappings["t"] = {
       l = { "<cmd>TroubleToggle loclist<cr>", "loclist" },
       r = { "<cmd>TroubleToggle lsp_references<cr>", "references" },
     },
-
     -- call trim after plugin load --
     -- https://github.com/cappyzawa/trim.nvim
-    require('trim').setup({
+    require("trim").setup({
       -- if you want to ignore markdown file.
       -- you can specify filetypes.
       -- disable = { "markdown" },
@@ -398,7 +424,7 @@ lvim.builtin.which_key.mappings["t"] = {
     })
 
 -- call code_runner after plugin loads --
-require('code_runner').setup({
+require("code_runner").setup({
   -- put here the commands by filetype
   filetype = {
     -- java = "cd $dir && javac $fileName && java $fileNameWithoutExt",
@@ -410,7 +436,7 @@ require('code_runner').setup({
     ruby = "cd $dir && ruby $fileName",
     go = "cd $dir && go run $fileName",
     -- launch node w/wo debugger; custom --
-    javascript = "cd $dir && node $fileName"
+    javascript = "cd $dir && node $fileName",
     -- javascript = "cd $dir && node inspect $fileName"
     -- javascript = "cd $dir && /usr/bin/node --inspect /home/dualfade/Scripts/Src/Node/contact/node_modules/forever/bin/forever $fileName"
   },
