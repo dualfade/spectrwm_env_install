@@ -353,6 +353,7 @@ lvim.plugins = {
 require("luasnip").filetype_extend("typescript", { "javascript" })
 require 'luasnip'.filetype_extend("ruby", { "rails" })
 
+-- noice --
 require("noice").setup({
   lsp = {
     -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
