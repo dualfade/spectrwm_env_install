@@ -136,6 +136,6 @@ SLEEP_SEC=2
 #loops forever outputting a line every SLEEP_SEC secs
     while :; do
       # echo "$(cpu) |  $(mem) |  $(hdd) |  $(vpn) |  $(vol) | $(bat) | $(network) | $(universal_time) |"
-      echo "+@fg=1; $(cpu) |  $(mem) |  $(hdd) |  $(vpn) |  $(vol) | $(bat) | $(network) +@fg=5; | $(universal_time) +@fg=0;|"
+      echo "+@fg=1; $(cpu) |  $(mem) |  $(hdd) |  $(vpn) |  $(vol) | $(bat) | $(network) +@fg=5; | $(universal_time) +@fg=0;|"
         sleep $SLEEP_SEC
     done
