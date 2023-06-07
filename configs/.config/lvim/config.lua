@@ -122,7 +122,10 @@ lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
--- lvim.builtin.notify.active = true
+
+-- FIX: disable for noice errors --
+-- lvim.builtin.notify.active = false
+
 lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
@@ -137,6 +140,7 @@ lvim.builtin.treesitter.ensure_installed = {
   "python",
   "typescript",
   "tsx",
+  "html",
   "css",
   "rust",
   "java",
@@ -230,8 +234,24 @@ lvim.builtin.telescope.pickers = {
 }
 
 -- https://github.com/LunarVim/LunarVim/issues/1747
+-- https://github.com/LunarVim/LunarVim/blob/3de829e76ed3d90b25250b1ab76f6425146af9d2/README.md#breaking-changes --
+-- Select which servers should be configured manually. Requires `:LvimCacheReset` to take effect.
+-- See the full default list `:lua print(vim.inspect(lvim.lsp.override))`
+-- vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "pyright" })
+
 local formatters = require("lvim.lsp.null-ls.formatters")
 formatters.setup({
+
+  -- https://github.com/psf/black --
+  {
+    command = "black",
+    filetypes = { "python" },
+  },
+  --WARN: disabling for now; conflicting ? --
+  -- {
+  --   command = "eslint",
+  --   filetypes = { "javascript", "javascriptreact" },
+  -- },
   {
     command = "prettier",
     extra_args = { "--print-with", "100" },
@@ -243,6 +263,8 @@ formatters.setup({
       "typescript",
       "json",
       "markdown",
+      "html",
+      "css",
     },
   },
 })
@@ -252,7 +274,7 @@ local linters = require("lvim.lsp.null-ls.linters")
 linters.setup({
   {
     command = "eslint_d",
-    filetypes = { "typescript", "typescriptreact" },
+    filetypes = { "javascript", "javascriptreact" },
   },
 })
 linters.setup({
@@ -345,17 +367,69 @@ lvim.plugins = {
   { "MunifTanjim/nui.nvim" },
   { "rcarriga/nvim-notify" },
   { "folke/noice.nvim" },
+  -- https://github.com/zbirenbaum/copilot-cmp --
+  -- vim-copilot-git requires subscription --
+  -- medium; https://bit.ly/43d5USn --
+  {
+    "zbirenbaum/copilot-cmp",
+    event = { "BufRead", "InsertEnter" },
+    dependencies = { "zbirenbaum/copilot.lua" },
+    config = function()
+      vim.defer_fn(function()
+        require("copilot").setup()
+        require("copilot_cmp").setup()
+      end, 100)
+    end,
+  },
+
+  -- {
+  --   "zbirenbaum/copilot.lua",
+  --   cmd = "Copilot",
+  --   event = "InsertEnter",
+  -- },
+  -- {
+  --   "zbirenbaum/copilot-cmp",
+  --   after = { "copilot.lua" },
+  --   config = function()
+  --     require("copilot_cmp").setup()
+  --   end,
+  -- },
 }
 -- end func
+
+-- copilot options --
+-- medium; https://bit.ly/43d5USn --
+local ok, copilot = pcall(require, "copilot")
+if not ok then
+  return
+end
+
+copilot.setup {
+  suggestion = {
+    keymap = {
+      accept = "<c-l>",
+      next = "<c-j>",
+      prev = "<c-k>",
+      dismiss = "<c-h>",
+    },
+  },
+}
+
+local opts = { noremap = true, silent = true }
+vim.api.nvim_set_keymap("n", "<c-s>", "<cmd>lua require('copilot.suggestion').toggle_auto_trigger()<CR>", opts)
 
 -- friendly-snippets extra requires --
 -- https://github.com/rafamadriz/friendly-snippets/wiki --
 require("luasnip").filetype_extend("typescript", { "javascript" })
 require 'luasnip'.filetype_extend("ruby", { "rails" })
 
--- noice --
+-- FIX: noice --
+-- https://github.com/folke/noice.nvim/issues/173 --
+-- https://github.com/folke/noice.nvim/issues/177 --
 require("noice").setup({
   lsp = {
+    signature = { enabled = false },
+    hover = { enabled = false },
     -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
     override = {
       ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
@@ -452,8 +526,3 @@ require("code_runner").setup({
     -- javascript = "cd $dir && /usr/bin/node --inspect /home/dualfade/Scripts/Src/Node/contact/node_modules/forever/bin/forever $fileName"
   },
 })
-
--- Autocommands (https://neovim.io/doc/user/autocmd.html)
--- lvim.autocommands.custom_groups = {
---   { "BufWinEnter", "*.lua", "setlocal ts=8 sw=8" },
--- }
