@@ -152,10 +152,11 @@ lvim.builtin.treesitter.ensure_installed = {
 lvim.builtin.treesitter.ignore_install = { "haskell" }
 lvim.builtin.treesitter.highlight.enabled = true
 
+-- FIX: broke; disabling --
 -- needed for matchup
 -- this should be a default with lunavrim settings
 -- https://github.com/andymass/vim-matchup/issues/262
-lvim.builtin.treesitter.matchup.enable = true
+-- lvim.builtin.treesitter.matchup.enable = true
 
 -- generic LSP settings
 
@@ -302,14 +303,14 @@ lvim.plugins = {
   -- https://github.com/rmehri01/onenord.nvim
   { "rmehri01/onenord.nvim" },
   { "catppuccin/nvim" },
+  -- FIX: broken --
   -- https://github.com/andymass/vim-matchup
-  {
-    "andymass/vim-matchup",
-    event = "CursorMoved",
-    config = function()
-      vim.g.matchup_matchparen_offscreen = { method = "popup" }
-    end,
-  },
+  -- {
+  --   "andymass/vim-matchup",
+  --   setup = function()
+  --     vim.g.matchup_matchparen_offscreen = { method = "popup" }
+  --   end,
+  -- },
   { "folke/trouble.nvim",      cmd = "TroubleToggle" },
   { "thaerkh/vim-indentguides" },
   { "cappyzawa/trim.nvim" },
@@ -339,6 +340,7 @@ lvim.plugins = {
   { "prettier/vim-prettier" },
   -- https://github.com/sindrets/diffview.nvim
   { "sindrets/diffview.nvim", dependencies = "nvim-lua/plenary.nvim" },
+  -- shortcuts --
   -- https://github.com/rafamadriz/friendly-snippets --
   -- https://github.com/rafamadriz/friendly-snippets/wiki/Python --
   {
