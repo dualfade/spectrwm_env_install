@@ -13,63 +13,67 @@ window:
     y: 4
 
   dimensions:
-    columns: 164
-    lines: 42
+    columns: 130
+    lines: 30
 
 colors:
-  name: Chalk (dark)
-  author: Chris Kempson
+  name: GJM
+  author: ""
   primary:
-    background: "#151515"
-    foreground: "#d0d0d0"
+    background: "#1c1c1c"
+    foreground: "#c5c5c5"
   cursor:
-    text: "#151515"
-    cursor: "#d0d0d0"
+    text: "#1c1c1c"
+    cursor: "#c5c5c5"
   normal:
-    black: "#151515"
-    red: "#fb9fb1"
-    green: "#acc267"
-    yellow: "#ddb26f"
-    blue: "#6fc2ef"
-    magenta: "#e1a3ee"
-    cyan: "#12cfc0"
-    white: "#d0d0d0"
+    black: "#1c1c1c"
+    red: "#ff005b"
+    green: "#cee318"
+    yellow: "#ffe755"
+    blue: "#048ac7"
+    magenta: "#833c9f"
+    cyan: "#0ac1cd"
+    white: "#e5e5e5"
   bright:
-    black: "#505050"
-    red: "#fb9fb1"
-    green: "#acc267"
-    yellow: "#ddb26f"
-    blue: "#6fc2ef"
-    magenta: "#e1a3ee"
-    cyan: "#12cfc0"
-    white: "#f5f5f5"
+    black: "#666666"
+    red: "#ff00a0"
+    green: "#ccff00"
+    yellow: "#ff9f00"
+    blue: "#48c6ff"
+    magenta: "#be67e1"
+    cyan: "#63e7f0"
+    white: "#f3f3f3"
 
 font:
   normal:
+    family: mono
     # family: Hack Nerd Font
     # family: Source Code Pro
-    family: JetBrainsMono Nerd Font
+    # family: JetBrainsMono Nerd Font
     style: Regular
 
   bold:
+    family: mono
     # family: Hack Nerd Font
     # family: Source Code Pro
-    family: JetBrainsMono Nerd Font
+    # family: JetBrainsMono Nerd Font
     style: Bold
 
   italic:
+    family: mono
     # family: Hack Nerd Font
     # family: Source Code Pro
-    family: JetBrainsMono Nerd Font
+    # family: JetBrainsMono Nerd Font
     style: Italic
 
   bold_italic:
+    family: mono
     # family: Hack Nerd Font
     # family: Source Code Pro
-    family: JetBrainsMono Nerd Font
+    # family: JetBrainsMono Nerd Font
     style: Bold Italic
 
-  size: 6
+  size: 8
 
 # Key bindings
 Key_bindings:
@@ -84,4 +88,4 @@ Key_bindings:
   - { key: C, mods: Control|Alt, action: Copy }
   - { key: Return, mods: Control, action: SpawnNewInstance }
   - { key: T, mods: Control, action: SpawnNewInstance }
-theme: Chalk.dark
+theme: Gjm
