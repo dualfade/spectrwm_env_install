@@ -1,0 +1,61 @@
+[colors.bright]
+black = "#666666"
+blue = "#48c6ff"
+cyan = "#63e7f0"
+green = "#ccff00"
+magenta = "#be67e1"
+red = "#ff00a0"
+white = "#f3f3f3"
+yellow = "#ff9f00"
+
+[colors.cursor]
+cursor = "#c5c5c5"
+text = "#1c1c1c"
+
+[colors.normal]
+black = "#1c1c1c"
+blue = "#048ac7"
+cyan = "#0ac1cd"
+green = "#cee318"
+magenta = "#833c9f"
+red = "#ff005b"
+white = "#e5e5e5"
+yellow = "#ffe755"
+
+[colors.primary]
+background = "#1c1c1c"
+foreground = "#c5c5c5"
+
+[env]
+TERM = "xterm-256color"
+WINIT_X11_SCALE_FACTOR = "1"
+
+[font]
+size = 8
+
+[font.bold]
+family = "mono"
+style = "Bold"
+
+[font.bold_italic]
+family = "mono"
+style = "Bold Italic"
+
+[font.italic]
+family = "mono"
+style = "Italic"
+
+[font.normal]
+family = "mono"
+style = "Regular"
+
+[scrolling]
+history = 5000
+
+[window.dimensions]
+columns = 130
+lines = 30
+
+[window.padding]
+x = 4
+y = 4
